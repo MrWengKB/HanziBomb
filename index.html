@@ -22,16 +22,16 @@
 
     #ui-bar {
       background-color: white;
-      padding: 12px 20px;
+      padding: 10px 15px;
       border-radius: 15px;
       display: inline-flex;
-      gap: 15px;
+      gap: 10px;
       align-items: center;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       margin-bottom: 15px;
       font-size: 18px;
       font-weight: bold;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: center;
     }
 
@@ -206,13 +206,13 @@
   
   <div id="ui-bar">
     <div class="control-box">
-      <label for="lesson-select">选择课次:</label>
+      <label for="lesson-select">课次:</label>
       <select id="lesson-select" onchange="changeLesson()">
         <!-- options populated by JS -->
       </select>
     </div>
-    <div class="stat-box">生命: ❤️ <span id="lives">10</span></div>
-    <div class="stat-box">得分: ⭐ <span id="score">0</span> / <span id="target-score">20</span></div>
+    <div class="stat-box">❤️ <span id="lives">10</span></div>
+    <div class="stat-box">⭐ <span id="score">0</span> / <span id="target-score">20</span></div>
     <div class="control-box">
       <label for="speed">速度:</label>
       <input type="range" id="speed" min="1" max="8" step="0.5" value="2.5">
@@ -1749,19 +1749,16 @@
     // 初始化课次下拉菜单
     function initLessonOptions() {
       // 全部课次选项
-      let totalCount = 0;
-      Object.keys(ALL_LESSONS).forEach(k => totalCount += ALL_LESSONS[k].length);
-      
       const allOpt = document.createElement('option');
       allOpt.value = 'ALL';
-      allOpt.innerText = `全部课次 (${totalCount}字)`;
+      allOpt.innerText = '全部课次';
       lessonSelect.appendChild(allOpt);
 
       // 各课次选项
       for (let lesson in ALL_LESSONS) {
         const opt = document.createElement('option');
         opt.value = lesson;
-        opt.innerText = `${lesson} (${ALL_LESSONS[lesson].length}字)`;
+        opt.innerText = lesson;
         lessonSelect.appendChild(opt);
       }
       updateStartScreenInfo();
