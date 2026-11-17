@@ -160,8 +160,12 @@ function spawnWave() {
   let usedChars = new Set([targetObj.char]);
 
   // 干扰项机制：优先从当前课次选择不同拼音的生字
+  // 多音字：任何一个读音和题目相同的字都不能当干扰项
+  const targetPinyin = targetObj.pinyin.toLowerCase();
+  const soundsLikeTarget = item => item.pinyins.some(p => p.toLowerCase() === targetPinyin);
+
   let candidateList = currentDictionary
-    .filter(item => item.pinyin.toLowerCase() !== targetObj.pinyin.toLowerCase() && !usedChars.has(item.char))
+    .filter(item => !soundsLikeTarget(item) && !usedChars.has(item.char))
     .sort(() => Math.random() - 0.5);
 
   for (let cand of candidateList) {
@@ -177,7 +181,7 @@ function spawnWave() {
   // 如果当前课次字数少于4个互不重读音的字，从全局字表补充干扰项
   if (choices.length < 4) {
     let globalCandidates = GLOBAL_DICTIONARY
-      .filter(item => !usedPinyins.has(item.pinyin.toLowerCase()) && !usedChars.has(item.char))
+      .filter(item => !soundsLikeTarget(item) && !usedPinyins.has(item.pinyin.toLowerCase()) && !usedChars.has(item.char))
       .sort(() => Math.random() - 0.5);
     for (let cand of globalCandidates) {
       const candPinyin = cand.pinyin.toLowerCase();
